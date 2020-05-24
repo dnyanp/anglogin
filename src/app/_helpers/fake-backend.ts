@@ -4,7 +4,11 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 // array in local storage for registered users
-let users = JSON.parse(localStorage.getItem('users')) || [];
+let users = [
+  { id: 1, username: 'admin1', password: 'admin', firstName: 'admin1', lastName: ''},
+  { id: 2, username: 'admin2', password: 'admin', firstName: 'admin2', lastName: ''},
+  { id: 3, username: 'admin3', password: 'admin', firstName: 'admin3', lastName: ''}
+];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -35,12 +39,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
-            }    
+            }
         }
 
         // route functions
 
         function authenticate() {
+          debugger
             const { username, password } = body;
             const user = users.find(x => x.username === username && x.password === password);
             if (!user) return error('Username or password is incorrect');
